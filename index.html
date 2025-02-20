@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himnario ID7 Honduras</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Himnario ID7 Honduras</h1>
+      <input type="number" id="pistaInput" placeholder="Ingresa el número de pista" />
+      <br />
+      <div>
+        <input type="radio" id="pista1" name="pista" value="Iglesia" required>
+        <label for="pista1">
+          Iglesia de Dios
+        </label>
+        <input type="radio" id="pista2" name="pista" value="Carlos" required>
+        <label for="pista2">
+          Carlos Ortez
+        </label>
+      </div>
+      <button id="sendButton" style="margin-top: 20px;">Abrir</button>
+      <p id="response"></p> <!-- Aquí se mostrará la pista -->
+    </div>
+    <script>
+      const { ipcRenderer } = require('electron')
+
+      // Event listener para el botón
+      document.getElementById('sendButton').addEventListener('click', () => {
+        // crear un objeto con los valores de los inputs
+        const pista = {
+          numero: document.getElementById('pistaInput').value,
+          artista: document.querySelector('input[name="pista"]:checked').value
+        };
+
+        ipcRenderer.send('input-submitted', pista); // Enviar el dato al main process
+      });
+
+      // Escuchar la respuesta del main process
+      ipcRenderer.on('display-input', (event, message) => {
+        document.getElementById('response').innerText = `Pista: ${message}`; // Mostrar el mensaje recibido
+      });
+    </script>
+  </body>
+</html>

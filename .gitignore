@@ -6,6 +6,9 @@ descarga.zip
 /.cache
 /.dist
 /out
+data/
+archivo*
+descarga.json
 /build
 
 # Archivos de logs y depuración

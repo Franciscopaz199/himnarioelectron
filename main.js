@@ -34,7 +34,7 @@ ipcMain.on('input-submitted', (event, pista) => {
     }
 
     // abrir la diapositiva
-    exec(`xdg-open "${path.join(__dirname, 'diapositivas/ppsx', pista.numero + '.ppsx')}"`, (err, stdout, stderr) => {
+    exec(`start "${path.join(__dirname, 'diapositivas/ppsx', pista.numero + '.ppsx')}"`, (err, stdout, stderr) => {
         if (err) {
             event.reply('display-input', `Diapositiva no encontrada`)  // Esto lo mostrará en el navegador
             console.error(`Error al abrir la diapositiva: ${err}`);
@@ -45,7 +45,7 @@ ipcMain.on('input-submitted', (event, pista) => {
 
 
     // Comando para abrir el archivo con la aplicación predeterminada en Linux
-    exec(`xdg-open "${filePath}"`, (err, stdout, stderr) => {
+    exec(`start "${filePath}"`, (err, stdout, stderr) => {
         if (err) {
             event.reply('display-input', `Archivo no encontrado`)  // Esto lo mostrará en el navegador
             console.error(`Error al abrir el archivo: ${err}`);

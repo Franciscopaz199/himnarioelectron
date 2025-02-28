@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himnario ID7</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: radial-gradient(circle, #006699, #003366);
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: left;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .btn-download {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffc107;
+            color: white;
+            font-size: 20px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            width: fit-content;
+        }
+
+        .btn-tutorial {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ff0000;
+            /* Rojo */
+            color: white;
+            font-size: 20px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            width: fit-content;
+            margin-left: 10px;
+            /* Espacio entre los botones */
+        }
+
+        .btn-download svg,
+        .btn-tutorial svg {
+            margin-left: 10px;
+        }
+
+        .button-container {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>HIMNARIO ID7</h1>
+        <p>Para continuar debes descargar los componentes necesarios.</p>
+        <p>
+            1. Descarga los archivos haciendo clic en el botón "Descargar".<br>
+            2. Extrae el archivo ZIP descargado.<br>
+            3. Copia los archivos extraídos a la siguiente carpeta:<br>
+            <P id="appDirectoryPath"></P>
+        </p>
+        <div class="button-container">
+            <button id="downloadBtn" class="btn-download">
+                Descargar
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+            </button>
+            <button id="tutorialBtn" class="btn-tutorial">
+                Ver Tutorial
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                </svg>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Electron: Abrir enlaces en el navegador predeterminado
+        const { shell } = require('electron');
+        const { app } = require('electron');
+
+        // Mostrar la ruta del directorio de la aplicación
+        // Botón de Descargar
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            const url = 'https://tuenlace.com'; // Reemplaza con tu URL
+            shell.openExternal(url);
+        });
+
+        // Botón de Ver Tutorial
+        document.getElementById('tutorialBtn').addEventListener('click', () => {
+            const youtubeUrl = 'https://www.youtube.com'; // Reemplaza con tu enlace de YouTube
+            shell.openExternal(youtubeUrl);
+        });
+       // document.getElementById('appDirectoryPath').textContent = app.getPath('userData');
+    </script>
+</body>
+
+</html>

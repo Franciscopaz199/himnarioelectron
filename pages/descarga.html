@@ -118,12 +118,17 @@
     <script>
         // Electron: Abrir enlaces en el navegador predeterminado
         const { shell } = require('electron');
-        const { app } = require('electron');
+        const { ipcRenderer } = require('electron');
+        
+
+        ipcRenderer.on('mensaje', (event, appDirectoryPath) => {
+            document.getElementById('appDirectoryPath').innerText = appDirectoryPath;
+        });
 
         // Mostrar la ruta del directorio de la aplicación
         // Botón de Descargar
         document.getElementById('downloadBtn').addEventListener('click', () => {
-            const url = 'https://tuenlace.com'; // Reemplaza con tu URL
+            const url = 'https://drive.google.com/drive/folders/1P1VmTu5CxOLOGeI8xJgahh5OExhIeBvX?usp=sharing'; // Reemplaza con tu URL
             shell.openExternal(url);
         });
 

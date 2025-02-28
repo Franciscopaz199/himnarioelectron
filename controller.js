@@ -6,8 +6,10 @@ const https = require("https");
 const request = require('request');
 const axios = require('axios');
 app.commandLine.appendSwitch('disable-gpu-vsync');
+// Obtener la ruta donde debería estar la carpeta 'data'
+const rutaData = path.join(process.env.APPDATA || process.env.HOME || process.env.USERPROFILE, 'himnario2.0', 'data');
 
-
+// Verificar si la carpeta 'data' existe
 
 let mainWindow;
 function createWindow() { // comentario
@@ -17,7 +19,8 @@ function createWindow() { // comentario
         webPreferences: {
             nodeIntegration: true,  // Habilitar nodeIntegration (si es necesario)
             contextIsolation: false // Desactivar contextIsolation
-        }
+        },
+        
     })
 
     validarExistenciaCarpeta('data'); // Llamar a la función para validar la carpeta
@@ -35,14 +38,15 @@ function validarExistenciaCarpeta(nombreCarpeta) {
     const rutaCarpeta = path.join(__dirname, nombreCarpeta);
 
     // Verificar si la carpeta existe
-    fs.access(rutaCarpeta, fs.constants.F_OK, (err) => {
+    fs.access(rutaData, fs.constants.F_OK, (err) => {
         if (err) {
             // Si la carpeta no existe, redirigir a la página de descarga
+            mainWindow.webContents.send('mensaje', rutaData);
             console.log(`La carpeta "${nombreCarpeta}" no existe. Redirigiendo a la página de descarga...`);
             mainWindow.loadFile('./pages/descarga.html');
         } else {
             // Si la carpeta existe, verificar si es realmente una carpeta
-            fs.stat(rutaCarpeta, (err, stats) => {
+            fs.stat(rutaData, (err, stats) => {
                 if (err) {
                     console.error('Error al verificar la carpeta:', err);
                     return;
@@ -55,8 +59,10 @@ function validarExistenciaCarpeta(nombreCarpeta) {
                     inicioController.main();
                 } else {
                     // Si no es una carpeta, redirigir a la página de descarga
+                    mainWindow.webContents.send('mensaje', 'La carpeta no es válida en'+rutaCarpeta);
                     console.log(`"${nombreCarpeta}" no es una carpeta. Redirigiendo a la página de descarga...`);
                     mainWindow.loadFile('./pages/descarga.html');
+                  
                 }
             });
         }
@@ -66,8 +72,8 @@ function validarExistenciaCarpeta(nombreCarpeta) {
 ipcMain.on('input-submitted', (event, pista) => {
     // bucar el numero de pista pista.numero en la carpeta data/pistas/pista.artista
     // en caso de no encontrar la pista, enviar un mensaje al renderer
-    const filePath = path.join(__dirname, 'data/pistas', pista.artista, pista.numero + '.mp3');
-    const diapsitivaPath = path.join(__dirname, 'data/diapositivas/ppsx', pista.numero + '.ppsx');
+    const filePath =  rutaData+ '/pistas/' + pista.artista + '/' + pista.numero + '.mp3';
+    const diapsitivaPath = rutaData + '/diapositivas/ppsx/' + pista.numero + '.ppsx';
     console.log(pista);
     fs.access(filePath, fs.constants.F_OK, (err) => {
         if (err) {
@@ -130,7 +136,7 @@ ipcMain.on('input-submitted', (event, pista) => {
 const inicioController = {
     leerCarpetas: () => {
         // Obtener los nombres de las carpetas dentro de la carpeta "data" y crear un array con los nombres
-        fs.readdir(path.join(__dirname, 'data/pistas'), (err, files) => {
+        fs.readdir(rutaData + '/pistas', (err, files) => {
             if (err) {
                 console.error('Error al leer la carpeta:', err);
                 mainWindow.webContents.send('error-modal', 'Error al leer la carpeta');
